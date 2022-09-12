@@ -1,6 +1,6 @@
 ---
 title: "BEE 4750/5750 Homework 1"
-author: "Your name here (your netID here)"
+author: "Julia Gonzales (jeg334)"
 date: `j import Dates; Dates.Date(Dates.now())`
 weave_options:
 	term: true
@@ -30,16 +30,35 @@ A = [0 1 1 1;
 		 0 0 0 1;
 		 0 0 0 1;
    	 	 0 0 0 0]
-	
-names = ["Plant", "Land Treatment", "Chem Treatment", "Pristine Brook"]
-shapes=[:hexagon, :rect, :rect, :hexagon]
-xpos = [0, -1, -0.25, 1]
-ypos = [1, 0, 0, -1]
+names = ["Plant\nEmissions =100m^3/d\n[WW YUK]=1 kg/m^3", "Land Treatment\nCost (dollars) = X1^2/20", "Chem Treatment\nCost (dollars) = 1.50X2", "Pristine Brook\nLimit = 20kg/d"]
+shapes=[:hex, :rect, :rect, :hex]
+xpos = [0, -2.25, 0, 4]
+ypos = [1, -2.75, -1.5, -1]
+edgelabel_dict = Dict()
+edgelabel_dict[1,2]=string("X1")
+edgelabel_dict[1,3]=string("X2")
+edgelabel_dict[1,4] = string("X3")
+edgelabel_dict[2,4]=string(".2X1")
+edgelabel_dict[3,4]=string("0.005X2")
 
-graphplot(A, names=names, markersize=0.15, markershapes=shapes, markercolor=:white, x=xpos, y=ypos)
+graphplot(A, names=names, edgelabel = edgelabel_dict, markersize=0.2, markershapes=shapes, markercolor=:white, x=xpos, y=ypos)
 ```
 
 ## Problem 1.2
+```math
+X_T = 100 m^3/day\\
+C = 1 kg/m^3\\
+M_T = C_T\dotX_T\\              
+\\
+X_T = X_1,i + X_2,i + X_3,i\\
+\\
+M_1 = 0.2*X_1*C\\
+M_2 = 0.005*X_2*C\\
+M_3 = X_3*C\\
+\\
+M_{pristine} = M_1 + M_2 + M_3
+```
+
 
 ## Problem 1.3
 
