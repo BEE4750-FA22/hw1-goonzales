@@ -45,6 +45,9 @@ graphplot(A, names=names, edgelabel = edgelabel_dict, markersize=0.2, markershap
 ```
 
 ## Problem 1.2
+Below is the mathematical model for the concentration of YUK in the stream. 
+The concentration of the YUK and its volumetric flows remain constant before treatment. 
+After treatment, the concentrations of YUK in \\X1\\ and \\X2\\ change.
 ```math
 X_T = 100 m^3/day\\
 C = 1 kg/m^3\\
@@ -58,11 +61,32 @@ M_3 = X_3*C\\
 \\
 M_{pristine} = M_1 + M_2 + M_3
 ```
+Below is the mathematical for the cost. 
+```math
+Cost_1 = X1^2/20\\
+Cost_2 = 1.50\dotX2\\
+Cost_T = Cost_1 + Cost_2\\
+```
 
 
 ## Problem 1.3
+```julia
+function cost_and_conc(X1,X2,X3,C)
+	X_T = X1 + X2 + X3
+	M_T = X_T*C
+	M_1 = 0.2*X1*C
+	M_2 = 0.005*X2*C
+	M_3 = X3*C
+	M_pristine = M_1 + M_2 + M_3
+	Cost_1 = X1^2/20 
+	Cost_2 = 1.50*X2 
+	Cost_T = Cost_1 + Cost_2
+	return M_pristine, Cost_T
+end  
+```
 
 ## Problem 1.4
+
 
 ## Problem 1.5
 
