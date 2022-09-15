@@ -46,27 +46,43 @@ graphplot(A, names=names, edgelabel = edgelabel_dict, markersize=0.2, markershap
 
 ## Problem 1.2
 Below is the mathematical model for the concentration of YUK in the stream. 
-The concentration of the YUK and its volumetric flows remain constant before treatment. 
-After treatment, the concentrations of YUK in \\X1\\ and \\X2\\ change.
+
+First, we can define the initial volumetric flow, concentration, and mass flow in kg/day from the plant.
+Defining the mass in terms of kg/day will help us compare our concentration with regulations.
 ```math
 X_T = 100 m^3/day\\
 C = 1 kg/m^3\\
-M_T = C_T\dotX_T\\              
+M_T = C_T\dotX_T (m^3/day\dotkg/m^3=kg/day)            
 \\
+```
+We know, based on the Law of Conservation of Mass, that the total flow must be constant. 
+Therefore, the sum of $X_1, X_2, X_3$ must be constant, and $X_1, X_2$ cannot exceed $100 m^3/day$.
+```math
 X_T = X_1 + X_2 + X_3\\
 \\
-X_1 + X_2 \le X_T
+0 \le X_1, X_2\\
+X_1 + X_2 \le X_T\\
 \\
+```
+We can solve for the mass flows exiting each treatment process based on the volumetric flows. 
+For the land treatment plan, the total mass entering the brook is $.2$ of the total mass entering the land, where total mass is the volume applied to the land times its concentration. 
+Similarly, for the chemical treatment plan, the mass entering the river is $0.005\dotX2% of the mass entering chemical treatment.
+The mass associated with $X_3$ is simply the volumetric flow times the concentration.
+Summing these three flows together allows us to solve for the mass of YUK entering Pristine Brook. 
+```math
 M_1 = 0.2*X_1*C\\
-M_2 = 0.005*X_2*C\\
+M_2 = 0.005*X_2*X_2*C\\
 M_3 = X_3*C\\
 \\
 M_{pristine} = M_1 + M_2 + M_3
 ```
-Below is the mathematical for the cost. 
+Below is the mathematical model for the cost. 
+From the information given, the cost of land application is equal to $X_1^2/20$. In other words, it costs $X_1^2/20$ to apply every $m^3/day$ of YUK. 
+The cost of chemical treatment is a linear $1.50\dotX_2$, so every additional $m^3/day$ of YUK, the cost increases by $1.50.
+The total cost is then the sum of the two costs, as direct discharge into the brook ($X_3$) is free. 
 ```math
-Cost_1 = X1^2/20\\
-Cost_2 = 1.50\dotX2\\
+Cost_1 = X_1^2/20\\
+Cost_2 = 1.50\dotX_2\\
 Cost_T = Cost_1 + Cost_2\\
 ```
 
@@ -83,12 +99,12 @@ function cost_and_conc(X1,X2)
 	Cost_1 = X1^2/20 
 	Cost_2 = 1.50*X2 
 	Cost_T = Cost_1 + Cost_2
-	return M_pristine, M_1, M_2, M_3, Cost_T
+	return M_pristine, Cost_T
 end  
 ```
 
 ## Problem 1.4
-```julia
+```julia;eval = true; out_width = "12 cm", label = "scatter-plot"
 
 #figure out how many entries there should be in our x and y axis
 num = 0
@@ -103,19 +119,26 @@ end
 values = 0:1:100
 conc = zeros(1,num)
 cost = zeros(1,num)
+index = 1
 for i in eachindex(values)
 	X1 = values[i]
 	X2 = 100 - X1
 	for j in 1:X2
-		conc[1, i+j],cost[1, i+j]=cost_and_conc(X1,j)
+		conc[1, index],cost[1, index]=cost_and_conc(X1,j)
+		global index = index + 1
 	end
 end
 
 using Plots
-scatter(conc,cost)
+scatter(conc,cost,title="Cost vs. YUK Concentration",xlabel = "Concentration (kg/day)",ylabel="Cost (dollars")
 
 ```
+```math
+\ref{fig:scatter-plot}
+```
 ## Problem 1.5
+
+
 
 ## Problem 1.6
 
