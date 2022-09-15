@@ -48,7 +48,7 @@ graphplot(A, names=names, edgelabel = edgelabel_dict, markersize=0.2, markershap
 Below is the mathematical model for the concentration of YUK in the stream. 
 
 First, we can define the initial volumetric flow, concentration, and mass flow in kg/day from the plant.
-Defining the mass in terms of kg/day will help us compare our concentration with regulations.
+Defining the mass in terms of kg/day will help us compare our concentrations with EPA regulations.
 ```math
 X_T = 100 m^3/day\\
 C = 1 kg/m^3\\
@@ -56,7 +56,7 @@ M_T = C_T*X_T (m^3/day*kg/m^3=kg/day)
 \\
 ```
 We know, based on the Law of Conservation of Mass, that the total flow must be constant. 
-Therefore, the sum of $X_1, X_2, X_3$ must be constant, and $X_1, X_2$ cannot exceed $100 m^3/day$.
+Therefore, the sum of $X_1, X_2, X_3$ must be constant, and $X_1, X_2$ cannot exceed $100  m^3/day$.
 ```math
 X_T = X_1 + X_2 + X_3\\
 \\
@@ -71,7 +71,7 @@ The mass associated with $X_3$ is simply the volumetric flow times the concentra
 Summing these three flows together allows us to solve for the mass of YUK entering Pristine Brook. 
 ```math
 M_1 = 0.2*X_1*C\\
-M_2 = 0.005*X_2*X_2*C\\
+M_2 = (0.005*X_2)*X_2*C\\
 M_3 = X_3*C\\
 \\
 M_{pristine} = M_1 + M_2 + M_3
@@ -106,7 +106,7 @@ end
 ## Problem 1.4
 ```julia;eval = true; out_width = "12 cm"; label = "scatter-plot"
 
-#figure out how many entries there should be in our x and y axis
+#figure out how many points will be on our scatter plot
 num = 0
 for i in 0:1:100 
 	X1 = i+1
@@ -116,6 +116,7 @@ for i in 0:1:100
 	end
 end 
 
+#generate two vectors to plot cost v. concentration
 values = 0:1:100
 conc = zeros(1,num)
 cost = zeros(1,num)
@@ -131,24 +132,30 @@ end
 
 using Plots
 scatter(conc,cost,title="Cost vs. YUK Concentration",xlabel = "Concentration (kg/day)",ylabel="Cost (dollars", legend = false)
-
+vline!([20,0])
 ```
 ```math
 \ref{fig:scatter-plot}
 ```
+
+Looking at this plot, we can see that as concentration increases, cost generally decreases. The opposite is also true. 
+
+
 ## Problem 1.5
 
 Based on the plot from 1.5, I can see two main treatment plants that could be chosen, depending on how stakeholder needs balance out. 
 One possible plan would be to choose the plan that meets the 20 kg/day regulatory standard at the lowest cost. 
 This would benefit both the factory owners and the regulatory agencies, by meeting the YUK requirements without sacrificing more money than necessary.
 Another possible plan would be to choose the plan that produces the lowest YUK emissions possible. 
-This would benefit the public and the environment by reducing pollution as much as possible, and benefit regulatory agencies by exceeding the standards.
+This would benefit the public and the environment by reducing pollution as much as possible, and benefit regulatory agencies by exceeding the minimum treatment requirement.
 Surprisingly, this plan would not be the most expensive option based on the graph, so it wouldn't be the worst option for the factory owners. It does appear to be about 100 dollars more expensive than the other plan, however. 
-
+\\
 These conclusions are influenced by how the numerical experiment was set up. 
 For example, the model includes a waste stream, $X_3$, discharged directly into the stream at zero cost. 
-If this stream was removed or it was assigned a cost (which might be more accurate), the minimum cost might be higher. 
-
+If this stream was removed or it was assigned a cost (which might be more realistic), the minimum cost might be higher. 
+As another example, the model calculates the concentration in terms of $kg/day$. 
+This was to match the given units of the EPA effluent standard, but it neglects the concentration of the contaminant in the brook water (this model looks at YUK in terms of mass over time, instead of mass over volume). 
+Depending on how variable the volume of water in Pristine Brook is and how YUK interacts with the environment, the density of YUK might be more important, and might impact the goals of stakeholders. 
 
 ## Problem 1.6
 
@@ -157,15 +164,29 @@ These results assume that both the volumetric flows and the YUK concentration fr
 However, it's possible that these concentrations vary over time. 
 It would be helpful to perform a stastical analysis to study flow and concentration over time,
 to see how low or high the average mass discharge should be so that above average discharges do not break regulatory limits or harm the environment.
-
+\\
 This model also assumes that the EPA limit of 20 kg/day only applies to Cheap Plastic Products Inc.,
 and/or that Cheap Plastics Inc. is the only plant discharging YUK into Pristine Brook. 
 If there are additional plants adding YUK to the system, then Cheap Plastics Inc. may have to further reduce its emissions.
 Even if there are no additional plants, it may be useful to model how additional plants might affect the brook. 
-
+\\
 Lastly, this model assumes that these three methods are the only treatment methods Cheap Plastics Inc. would be willing to implement. 
 It may be helpful to include other treatment streams in the model, especially if there should be a high safety margin or if other plants need to be considered. 
 
 
 
 # References
+
+Core functions. (n.d.). Graphs.jl. Retrieved September 15, 2022, from https://juliagraphs.org/Graphs.jl/dev/core_functions/core/. 
+
+Examples. (n.d.). Plots. Retrieved September 15th, 2022, from https://docs.juliaplots.org/latest/graphrecipes/examples/. 
+
+Index. (n.d.). Plots. Retrieved September 15h, 2022, from https://docs.juliaplots.org/stable/api/#Plots.vline-Tuple. 
+
+Julia Discourse [ExpandingMan]. (November 2018). Single string on multiple lines without '\n' [Online forum post]. Julia.https://discourse.julialang.org/t/single-string-on-multiple-lines-without-n/18099
+
+LaTeX/Mathematics. (September 14, 2022). In Wikibooks. https://en.wikibooks.org/wiki/LaTeX/Mathematics.
+
+Multivariate Distributions. (n.d.). Distributions.jl. Retrieved September 15th, 2022, from https://juliastats.org/Distributions.jl/stable/multivariate/. 
+
+Shapes in Julia. (n.d.). Plotly.com. Retrieved September 15th, 2022, from https://plotly.com/julia/shapes/. 
