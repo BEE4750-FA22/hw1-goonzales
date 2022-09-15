@@ -3,12 +3,12 @@ title: "BEE 4750/5750 Homework 1"
 author: "Julia Gonzales (jeg334)"
 date: `j import Dates; Dates.Date(Dates.now())`
 weave_options:
-	term: true
-	cache: off
-	md2pdf:
-		template: "bee4750pdf.tpl"
-	md2html:
-		template: "bee4750html.tpl"
+term: true
+cache: off
+md2pdf:
+template: "bee4750pdf.tpl"
+md2html:
+template: "bee4750html.tpl"
 ---
 
 <!-- This setups the environment and installs packages, but doesn't appear in the generated document -->
@@ -53,7 +53,9 @@ X_T = 100 m^3/day\\
 C = 1 kg/m^3\\
 M_T = C_T\dotX_T\\              
 \\
-X_T = X_1,i + X_2,i + X_3,i\\
+X_T = X_1 + X_2 + X_3\\
+\\
+X_1 + X_2 \le X_T
 \\
 M_1 = 0.2*X_1*C\\
 M_2 = 0.005*X_2*C\\
@@ -71,27 +73,50 @@ Cost_T = Cost_1 + Cost_2\\
 
 ## Problem 1.3
 ```julia
-function cost_and_conc(X1,X2,X3,C)
-	X_T = X1 + X2 + X3
-	M_T = X_T*C
+function cost_and_conc(X1,X2)
+	X3 = 100 - X1 - X2 
+    C = 1
 	M_1 = 0.2*X1*C
-	M_2 = 0.005*X2*C
+	M_2 = 0.005*X2*X2*C
 	M_3 = X3*C
 	M_pristine = M_1 + M_2 + M_3
 	Cost_1 = X1^2/20 
 	Cost_2 = 1.50*X2 
 	Cost_T = Cost_1 + Cost_2
-	return M_pristine, Cost_T
+	return M_pristine, M_1, M_2, M_3, Cost_T
 end  
 ```
 
 ## Problem 1.4
+```julia
 
+#figure out how many entries there should be in our x and y axis
+num = 0
+for i in 0:1:100 
+	X1 = i+1
+	X2 = 100 - i
+	for j in 1:X2
+		global num = num + 1
+	end
+end 
 
+values = 0:1:100
+conc = zeros(1,num)
+cost = zeros(1,num)
+for i in eachindex(values)
+	X1 = values[i]
+	X2 = 100 - X1
+	for j in 1:X2
+		conc[1, i+j],cost[1, i+j]=cost_and_conc(X1,j)
+	end
+end
+
+using Plots
+scatter(conc,cost)
+
+```
 ## Problem 1.5
 
 ## Problem 1.6
-
-## Problem 1.7
 
 # References
