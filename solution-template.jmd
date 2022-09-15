@@ -52,7 +52,7 @@ Defining the mass in terms of kg/day will help us compare our concentration with
 ```math
 X_T = 100 m^3/day\\
 C = 1 kg/m^3\\
-M_T = C_T\dotX_T (m^3/day\dotkg/m^3=kg/day)            
+M_T = C_T*X_T (m^3/day*kg/m^3=kg/day)            
 \\
 ```
 We know, based on the Law of Conservation of Mass, that the total flow must be constant. 
@@ -66,7 +66,7 @@ X_1 + X_2 \le X_T\\
 ```
 We can solve for the mass flows exiting each treatment process based on the volumetric flows. 
 For the land treatment plan, the total mass entering the brook is $.2$ of the total mass entering the land, where total mass is the volume applied to the land times its concentration. 
-Similarly, for the chemical treatment plan, the mass entering the river is $0.005\dotX2% of the mass entering chemical treatment.
+Similarly, for the chemical treatment plan, the mass entering the river is $0.0052qwX2% of the mass entering chemical treatment.
 The mass associated with $X_3$ is simply the volumetric flow times the concentration.
 Summing these three flows together allows us to solve for the mass of YUK entering Pristine Brook. 
 ```math
@@ -78,11 +78,11 @@ M_{pristine} = M_1 + M_2 + M_3
 ```
 Below is the mathematical model for the cost. 
 From the information given, the cost of land application is equal to $X_1^2/20$. In other words, it costs $X_1^2/20$ to apply every $m^3/day$ of YUK. 
-The cost of chemical treatment is a linear $1.50\dotX_2$, so every additional $m^3/day$ of YUK, the cost increases by $1.50.
+The cost of chemical treatment is a linear $1.50*X_2$, so every additional $m^3/day$ of YUK, the cost increases by 1.50 dollars.
 The total cost is then the sum of the two costs, as direct discharge into the brook ($X_3$) is free. 
 ```math
 Cost_1 = X_1^2/20\\
-Cost_2 = 1.50\dotX_2\\
+Cost_2 = 1.50*X_2\\
 Cost_T = Cost_1 + Cost_2\\
 ```
 
@@ -130,7 +130,7 @@ for i in eachindex(values)
 end
 
 using Plots
-scatter(conc,cost,title="Cost vs. YUK Concentration",xlabel = "Concentration (kg/day)",ylabel="Cost (dollars")
+scatter(conc,cost,title="Cost vs. YUK Concentration",xlabel = "Concentration (kg/day)",ylabel="Cost (dollars", legend = false)
 
 ```
 ```math
@@ -138,8 +138,20 @@ scatter(conc,cost,title="Cost vs. YUK Concentration",xlabel = "Concentration (kg
 ```
 ## Problem 1.5
 
-
+Based on the plot from 1.5, I would choose the plan that achieves the 20 kg/day regulatory limit that has the lowest cost
 
 ## Problem 1.6
+
+One area to further investigate would be the best safety margin for meeting the regulatory limit. 
+These results assume that both the volumetric flows and the YUK concentration from the plant are constant. 
+However, it's possible that these concentrations vary over time. 
+It would be helpful to perform a stastical analysis to study flow and concentration over time,
+to see how low or high the average mass discharge should be so that above average discharges do not break regulatory limits or harm the environment.
+
+This model also assumes that the EPA limit of 20 kg/day only applies to Cheap Plastic Products Inc.,
+and/or that Cheap Plastics Inc. is the only plant discharging YUK into Pristine Brook. 
+
+
+
 
 # References
